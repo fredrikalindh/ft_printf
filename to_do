@@ -1,6 +1,12 @@
 int printf(const char *format, ...)
 
-% followed by FLAG CHARACTER, FIELD WIDTH, PRECISION, LENGTH MODIFIER, or %
+% followed by FLAG CHARACTER, FIELD WIDTH, PRECISION & CONVERSION SPECIFIER %
+
+%
+- 0
+* or 1-9 - starting dec digit
+. followed by dec digit or *
+cspdiuxX%
 
 
 CONVERSIONS
@@ -18,3 +24,6 @@ FLAGS
 
 
 array of (*f) with a responding array of FLAGS?
+
+
+ex:

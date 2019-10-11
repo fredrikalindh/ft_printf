@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft.h                                               :+:      :+:    :+:   */
+/*   ft_putnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/10 17:18:38 by frlindh          ###   ########.fr       */
+/*   Created: 2019/10/11 11:35:10 by frlindh           #+#    #+#             */
+/*   Updated: 2019/10/11 11:36:46 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_H
-# define FT_H
+#include "ft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdarg.h>
+void ft_putnstr(const char *str, size_t n)
+{
+	size_t i;
 
-int ft_printf(const char *, ...);
-
-#endif
+	i = 0;
+	while (str[i] && i < n)
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+}
