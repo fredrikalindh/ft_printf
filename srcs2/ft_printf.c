@@ -6,14 +6,14 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:12:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/14 17:55:11 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/14 18:17:51 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
 
-const char	ft_putchar(int *dir, va_list ap)
+const char	ft_putc(int *dir, va_list ap)
 {
 	const char c;
 
@@ -26,7 +26,7 @@ const char	ft_putchar(int *dir, va_list ap)
 	return (1);
 }
 
-const char	ft_putstr(int *dir, va_list ap)
+const char	ft_puts(int *dir, va_list ap)
 {
 	const char *c;
 
@@ -39,6 +39,46 @@ const char	ft_putstr(int *dir, va_list ap)
 	return (1);
 }
 
+const char	ft_putp(int *dir, va_list ap)
+{
+
+}
+
+const char	ft_putdi(int *dir, va_list ap)
+{
+
+}
+
+const char	ft_putu(int *dir, va_list ap)
+{
+
+}
+
+const char	ft_putx(int *dir, va_list ap)
+{
+	long int	nbr2;
+	char		*base;
+
+	if (dir[4] == 6)
+		base = "0123456789abcdef";
+	else
+		base = "0123456789ABCDEF";
+
+	nbr2 = va_arg(ap, long int);
+	if (nbr2 < 0)
+	{
+		nbr2 = nbr2 * -1;
+		ft_putchar('-');
+	}
+	if (nbr2 < 16)
+		ft_putchar(base[nbr2]);
+	if (nbr2 >= 16)
+	{
+		ft_putx(nbr2 / 16);
+		ft_putchar(base[nbr2 % 16]);
+	}
+}
+
 void	doop(const char *(*op[9])(int *dir, va_list ap))
 {
 	op[0] = ft_putc; // c
@@ -48,8 +88,24 @@ void	doop(const char *(*op[9])(int *dir, va_list ap))
 	op[4] = ft_putdi; // int arg, the precision, if any, gives the minimum number of digits that must appear
 	op[5] = ft_putu; // unsigned int
 	op[6] = ft_putx;
-	op[7] = ft_putX;
+	op[7] = ft_put;
 	op[8] = ft_putper;
+}
+
+int		ft_iscspec(const char c)
+{
+	const char *c_spec;
+	int i;
+
+	i = 0;
+	c_spec = C_SPEC;
+	while (c_spec[i])
+	{
+		if (c_spec[i] == c)
+			return (i)
+		i++;
+	}
+	return (-1);
 }
 
 void	ft_initdir(int *dir)
