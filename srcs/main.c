@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/11 11:25:13 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/14 13:11:35 by frlindh          ###   ########.fr       */
+/*   Created: 2019/10/14 11:26:46 by frlindh           #+#    #+#             */
+/*   Updated: 2019/10/14 12:14:19 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
-void ft_putnbr(int n)
+int main(int ac, char **av)
 {
-	if (n == -2147483648)
-	{
-		n = 147483648;
-		write(1, "-2", 2);
-	}
-	if (n < 0)
-	{
-		n = -n;
-		write(1, "-", 1);
-	}
-	if (n < 10)
-		ft_putchar(n + '0');
-	if (n >= 10)
-	{
-		ft_putnbr(n / 10);
-		ft_putchar(n % 10);
-	}
+	ft_printf(av[0]);
+	ft_printf("Hello\n");
+	ft_printf("Hej %s with an int %i and %%", av[0], ac);
 }

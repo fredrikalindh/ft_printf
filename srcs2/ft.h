@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/14 15:38:36 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/14 13:09:32 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ void		ft_setupdir(t_dir *dir);
 int			ft_conversion(t_dir dir, va_list ap);
 const char	*ft_directive(const char *format, t_dir *dir, va_list ap);
 int			main();
+
 
 #endif
