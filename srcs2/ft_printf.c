@@ -6,21 +6,19 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:12:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/15 16:23:57 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/15 18:34:11 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
 
-char	*ft_putc(int *dir, va_list ap)
+char	*ft_putc(int *dir, char c)
 {
-	char 			c;
 	char			*str;
 	unsigned int	i;
 	char			fill;
 
-	c = va_arg(ap, char);
 	fill = ' ';
 	if (dir[2] == 0)
 		dir[2] = 1;
@@ -39,9 +37,8 @@ char	*ft_putc(int *dir, va_list ap)
 	return (str);
 }
 
-char	*ft_puts(int *dir, va_list ap)
+char	*ft_puts(int *dir, char *s)
 {
-	char	*s;
 	char	*str;
 	int		i;
 	char	fill;
