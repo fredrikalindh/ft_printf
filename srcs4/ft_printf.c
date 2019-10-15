@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:12:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/16 00:34:23 by fredrikalindh    ###   ########.fr       */
+/*   Updated: 2019/10/16 00:45:36 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ char	*ft_putdi(char *nbr, int *dir, int len) // NOT DONE
 		return (NULL);
 	fill = dir[1] == 1 ? '0' : ' ';
 
+	/*
+	om 0 : overrides -, om neg nr -> minus före 0or, spelar bara roll m width
+	om .0 -> 0 will give no input
+	*/
+
 }
 
 int		to_di(const char *format, va_list ap) // NOT DONE
@@ -68,7 +73,8 @@ int		to_di(const char *format, va_list ap) // NOT DONE
 	str = ft_itoa(nbr);
 	len = ft_strlen(str);
 	dir[2] = len > dir[2] ? len : dir[2];
-	dir[2] = dir[3] != 0 ? dir[3] : dir[2];
+	dir[2] = dir[3] > dir[2] ? dir[3] : dir[2];
+	dir[0] = dir[1] == 1 ? 0 : dir[0];
 	ft_putdi(str, dir, len);
 	len = ft_strlen(str);
 	free(str);
