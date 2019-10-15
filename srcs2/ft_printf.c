@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:12:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/15 12:55:16 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:23:57 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,11 @@ char	*ft_putp(int *dir, va_list ap)
 
 char	*ft_putdi(int *dir, va_list ap)
 {
+	int		len;
+	char	*str;
+	int		num;
+
+	num = va_arg(ap, int);
 
 }
 
@@ -111,7 +116,6 @@ char	*ft_putx(int *dir, va_list ap)
 		base = "0123456789abcdef";
 	else
 		base = "0123456789ABCDEF";
-
 	nbr2 = va_arg(ap, long int);
 	if (nbr2 < 0)
 	{
@@ -211,14 +215,52 @@ int		ft_printf(const char *format, ...)
 		if (*format++ == '%')
 		{
 			format = ft_filldir(&dir, format, ap);
-			to_print = op[dir[4]], ap;
+			to_print = op[dir[4]](dir, ap);
 			ft_putstr(to_print);
 			char_count += (to_print);
 			free(to_print);
 		}
-		ft_putchar(*format++);
-		char_count++;
+		else
+		{
+			ft_putchar(*format++);
+			char_count++;
+		}
 	}
 	va_end(ap);
 	return (char_count);
+}
+
+
+
+int		ft_printf(const char *format, ...)
+{
+	int		char_count;
+	va_list	ap;
+	char	*(*op[9])(int, va_list);
+
+	doop(op);
+	va_start(format, ap);
+	char_count = 0;
+	while (*format != '\0')
+	{
+		if (*format++ == '%')
+		{
+			while(ft_iscspec(format) == -1)
+				format++;
+			char_count += op[ft_iscspec(format++)](dir, ap); // send to get arg
+		}
+		else
+		{
+			ft_putchar(*format++);
+			char_count++;
+		}
+	}
+	va_end(ap);
+	return (char_count);
+}
+
+int		main(int ac, char **av)
+{
+	ft_printf("Hejsan");
+
 }
