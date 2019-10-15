@@ -6,55 +6,103 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:12:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/14 18:17:51 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/15 12:55:16 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
 
-const char	ft_putc(int *dir, va_list ap)
+char	*ft_putc(int *dir, va_list ap)
 {
-	const char c;
+	char 			c;
+	char			*str;
+	unsigned int	i;
+	char			fill;
 
-	c = va_arg(ap, const char);
-	if (dir[2] != 0)
-	if (dir[3] != 0)
-	if (dir[0] == 1)
+	c = va_arg(ap, char);
+	fill = ' ';
+	if (dir[2] == 0)
+		dir[2] = 1;
+	if (!(str = (char *)malloc(sizeof(char) * (dir[2] + 1))))
+		return (NULL);
+	str[dir[2]] = '\0';
 	if (dir[1] == 1)
-	write(1, &c, 1);
-	return (1);
-}
-
-const char	ft_puts(int *dir, va_list ap)
-{
-	const char *c;
-
-	c = va_arg(ap, const char *);
-	if (dir[2] != 0)
-	if (dir[3] != 0)
+		fill = '0';
+	i = -1;
+	while (str[++i])
+		str[i] = fill;
 	if (dir[0] == 1)
-	if (dir[1] == 1)
-	write(1, &c, 1);
-	return (1);
+		str[0] = c;
+	else
+		str[i - 1] = c;
+	return (str);
 }
 
-const char	ft_putp(int *dir, va_list ap)
+char	*ft_puts(int *dir, va_list ap)
+{
+	char	*s;
+	char	*str;
+	int		i;
+	char	fill;
+
+	s = va_arg(ap, char *);
+	if (dir[3] == 0)
+		dir[3] = ft_strlen(str);
+	if (dir[2] < ft_strlen(str))
+		dir[2] = ft_strlen(str);
+	if (!(str = (char *)malloc(sizeof(char) * (dir[2] + 1))))
+		return (NULL);
+	fill = dir[1] == 1 ? '0' : ' ';
+	i = -1;
+	if (dir[0] == 0)
+	{
+		while (++i < (dir[2] - dir[3]))
+			str[i] = fill;
+	}
+	while (++i < dir[3])
+		str[i] = s[i];
+	while (++i < dir[2])
+		str[i] = fill;
+	str[i] = '\0';
+	return (str);
+}
+
+int		ft_nbrlen(int nbr)
+{
+	int len;
+	int div;
+
+	len = 11;
+	div = 1000000000;
+	if (nbr == 0)
+		return (1);
+	if (nbr > 0)
+		len--;
+	while (nbr / div == 0)
+	{
+		len--;
+		div = div / 10;
+	}
+	return (len);
+}
+
+char	*ft_putp(int *dir, va_list ap)
 {
 
 }
 
-const char	ft_putdi(int *dir, va_list ap)
+char	*ft_putdi(int *dir, va_list ap)
 {
 
 }
 
-const char	ft_putu(int *dir, va_list ap)
+char	*ft_putu(int *dir, va_list ap)
 {
 
 }
 
-const char	ft_putx(int *dir, va_list ap)
+char	*ft_putx(int *dir, va_list ap)
 {
 	long int	nbr2;
 	char		*base;
@@ -79,7 +127,7 @@ const char	ft_putx(int *dir, va_list ap)
 	}
 }
 
-void	doop(const char *(*op[9])(int *dir, va_list ap))
+void	doop(char *(*op[9])(int *dir, va_list ap))
 {
 	op[0] = ft_putc; // c
 	op[1] = ft_puts; // s w/ or w/out flags
@@ -119,7 +167,7 @@ void	ft_initdir(int *dir)
 
 const char	*ft_filldir(int *dir, const char *format, va_list ap)
 {
-	if (*format++ == '-')
+	if (*format++ == '-') // what if other order ?
 		dir[0] = 1;
 	if (*format++ == '0')
 		dir[1] = 1;
@@ -151,7 +199,8 @@ int		ft_printf(const char *format, ...)
 	int		char_count;
 	int		dir[5];
 	va_list	ap;
-	int		(*op[9])(int *, va_list);
+	char	*(*op[9])(int *, va_list);
+	char	*to_print;
 
 	doop(op);
 	va_start(format, ap);
@@ -162,14 +211,13 @@ int		ft_printf(const char *format, ...)
 		if (*format++ == '%')
 		{
 			format = ft_filldir(&dir, format, ap);
-			ft_putstr(op[dir[4]], ap);
-			char_count(ft_strlen(op[dir[4]], ap));
+			to_print = op[dir[4]], ap;
+			ft_putstr(to_print);
+			char_count += (to_print);
+			free(to_print);
 		}
-		else
-		{
-			ft_putchar(*format++);
-			char_count++;
-		}
+		ft_putchar(*format++);
+		char_count++;
 	}
 	va_end(ap);
 	return (char_count);
