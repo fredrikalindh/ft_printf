@@ -6,36 +6,54 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:12:09 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/16 00:45:36 by fredrikalindh    ###   ########.fr       */
+/*   Updated: 2019/10/18 13:54:36 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
-void	ft_initdir(int *dir, const char *format)
+int		ft_iscspec(const char c)
+{
+	const char *c_spec;
+	int i;
+
+	i = 0;
+	c_spec = C_SPEC;
+	while (c_spec[i])
+	{
+		if (c_spec[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	ft_initdir(int **dir, const char *format, va_list ap)
 {
 	int		i;
 
 	i = -1;
-	while (format[++i] == '-' || format[i] == '0')
+	while (ft_iscspec(format[++i]) == 0)
 	{
-		dir[0] = format[i] == '-' ? 1 : 0;
-		dir[1] = format[i] == '0' ? 1 : 0;
-	}
-	if (format[i] >= '1' && format[i] <= '9')
-		dir[2] = ft_atoi(&format[i]);
-	else if (format[i++] == '*')
-		dir[2] = va_arg(ap, int);
-	while (format[i] >= '0' && format[i] <= '9') //inside if ?
-			i++;
-	if (format[i++] == '.')
-	{
+		if (format[i] == '-')
+		dir[0] =  1;
+		if (format[i] == '0')
+			dir[1] = 1;
 		if (format[i] >= '1' && format[i] <= '9')
-			dir[3] = ft_atoi(&format[i]);
-		else if (format[i] == '*')
-			dir[3] = va_arg(ap, int);
-		while (format[i] >= '0' && format[i] <= '9')
-			i++;
+			dir[2] = ft_atoi(&format[i]);
+		while (format[i] >= '0' && format[i] <= '9') //inside if ?
+				i++;
+		if (format[i] == '*')
+			dir[2] = va_arg(ap, int);
+		if (format[i++] == '.')
+		{
+			if (format[i] >= '1' && format[i] <= '9')
+				dir[3] = ft_atoi(&format[i]);
+			else if (format[i] == '*')
+				dir[3] = va_arg(ap, int);
+			while (format[i] >= '0' && format[i] <= '9')
+				i++;
+		}
 	}
 }
 
@@ -68,7 +86,7 @@ int		to_di(const char *format, va_list ap) // NOT DONE
 	len = -1;
 	while (++len < 5)
 		dir[len] = 0;
-	ft_initdir(&dir, format);
+	ft_initdir(&dir, format, ap);
 	nbr = va_arg(ap, int);
 	str = ft_itoa(nbr);
 	len = ft_strlen(str);
@@ -116,7 +134,7 @@ int		to_s(const char *format, va_list ap)
 
 	dir[2] = 0;
 	dir[3] = -1;
-	ft_initdir(&dir, format);
+	ft_initdir(&dir, format, ap);
 	s = va_arg(ap, char *);
 	len = ft_strlen(s);
 	s = ft_putstr(s, dir, len);
@@ -129,17 +147,16 @@ int		to_c(const char *format, va_list ap)
 {
 	char	c;
 	int		dir[4];
-	char	str[2];
+	char	*str;
 	int		len;
 
-	i = -1;
 	dir[2] = 1;
-	ft_initdir(&dir, format);
+	ft_initdir(&dir, format, ap);
 	c = va_arg(ap, char);
 	dir[3] = 0;
 	str[0] = c;
 	str[1] = '\0';
-	len = ft_strlen(s);
+	len = ft_strlen(str);
 	str = ft_putstr(str, dir, len);
 	len = ft_strlen(str);
 	free(str);
@@ -157,22 +174,6 @@ void	create_ft_ptr(int (*to_forward[9])(const char *, va_list))
 	to_forward[6] = to_x;
 	to_forward[7] = to_X; // olika?
 	to_forward[8] = to_per;
-}
-
-int		ft_iscspec(const char c)
-{
-	const char *c_spec;
-	int i;
-
-	i = 0;
-	c_spec = C_SPEC;
-	while (c_spec[i])
-	{
-		if (c_spec[i] == c)
-			return (i)
-		i++;
-	}
-	return (-1);
 }
 
 int		ft_printf(const char *format, ...)
