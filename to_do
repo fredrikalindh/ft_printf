@@ -1,30 +1,15 @@
-int printf(const char *format, ...)
 
-% followed by FLAG CHARACTER, FIELD WIDTH, PRECISION & CONVERSION SPECIFIER %
+	/* process flags */
+	/* get field width */
+	/* it's the next argument */
 
-%
-- 0
-* or 1-9 - starting dec digit
-. followed by dec digit or *
-cspdiuxX%
+	/* get the precision */
+	/* it's the next argument */
 
 
-CONVERSIONS
-d, i -> int arg, the precision, if any, gives the minimum number of digits that must appear
-s -> const char * arg: if no l modifier is present - prints string until \0 or until precision
-						else const wchar_t * - wide chars
-p -> void * arg: printed in hexa
-u, x -> unsigned int arg: is converted in to unsigned decimal (u) or unsigned hexadecimal (x) with abcdef
-% : % * 2 -> '%'
-
-FLAGS
-- : left-jusify within the given field width
-0 : left-pads the number with zeroes instead of spaces where padding is specified. If both - and 0, 0 is ignored. If precision is given (d, i, u, x) 0 flag is ignored.
-* means X is given in the next argument
 
 
-array of (*f) with a responding array of FLAGS?
 
 
-ex:
-https://www.ibm.com/support/knowledgecenter/en/ssw_ibm_i_72/rtref/printf.htm
+
+/* integer number formats - set up the flags and "break" */
