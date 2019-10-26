@@ -1,13 +1,11 @@
 
 
-
-
-
-
-
-
-
-#include "boot.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdarg.h>
+#include <ctype.h>
+#include <strings.h>
 
 static int skip_atoi(const char **s)
 {
@@ -289,4 +287,9 @@ int printf(const char *fmt, ...)
 	puts(printf_buf);
 
 	return printed;
+}
+
+int	main()
+{
+	printf("%s\n", "test");
 }
