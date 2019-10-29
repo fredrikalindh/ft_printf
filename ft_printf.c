@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 12:58:06 by fredrika          #+#    #+#             */
-/*   Updated: 2019/10/29 15:58:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/29 16:56:32 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ static int	skip_atoi(const char **s)
 	int		nb;
 
 	nb = 0;
-	printf("%s\n", *s);
 	while (**s >= '0' && **s <= '9')
-		nb = nb * 10 + **s++ - '0';
+		nb = nb * 10 + *((*s)++) - '0';
 	return (nb);
 }
 
@@ -52,31 +51,34 @@ static void	ft_initdir(int *dir, const char **format, va_list ap)
 {
 	while (**format != '\0' && !(ft_iscspec(**format)))
 	{
-		printf("%c\n", **format);
-		if (**format == '0')
-			ZERO = 1;
-		else if (**format == '-')
-			LEFT = 1;
-		else if (**format >= '1' && **format <= '9')
+		printf("1:%c\n", **format);
+		if (**format >= '1' && **format <= '9')
 			WIDTH = skip_atoi(format);
-		else if (**format == '*')
+		if (**format == '*')
 		{
 			WIDTH = va_arg(ap, int);
 			if (WIDTH < 0 && (LEFT = 1) == 1)
 				WIDTH = WIDTH * -1;
 		}
-		else if (**format == '.')
+		printf("3:%s\n", *format);
+		if (*((*format)++) == '.')
 		{
-			printf("YO\n");
-			format++;
+			printf("2:%c}\n", **format);
 			if (**format >= '1' && **format <= '9')
 				PRECISION = skip_atoi(format);
 			else if (*((*format)++) == '*')
 				PRECISION = va_arg(ap, int);
+			printf("P%d (%c)\n", PRECISION, **format);
 			PRECISION = (PRECISION < 0) ? 0 : PRECISION;
 		}
+		printf("%c\n", **format);
+		if (**format == '0')
+			ZERO = 1;
+		if (**format == '-')
+			LEFT = 1;
+		format++;
 	}
-	
+
 	SPECIFIER = ft_iscspec(**format);
 }
 
