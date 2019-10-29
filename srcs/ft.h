@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/14 15:38:36 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/29 10:07:23 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,36 @@
 # include <unistd.h>
 # include <stdarg.h>
 
-# define C_SPEC = "cspdiuxX%"
-# define TYPE = char **types;
+# define BUFF_SIZE 10240
+# define C_SPEC "cspdiuxX%"
+/* ------------- DIR[] ------------- */
+# define ZERO dir[0] /* zero padding */
+# define LEFT dir[1] /* left justify */
+# define PLUS dir[2] /* sign = plus */
+# define SPACE dir[3] /* sign = ' '*/
+# define SMALL dir[4] /* use small chars for hexa */
+# define SPECIAL dir[5] /* # */
+# define WIDTH dir[6] /* field width */
+# define PRECISION dir[7]
+# define SPECIFIER dir[8]
 
-typedef struct		s_dir
+
+/* ---------- ALTERNATIVE ----------
+
+typedef	struct		s_dir
 {
-	int			min;
-	int			zero;
-	int			width;
-	int			precision;
-	char		c_spec;
+	int flags;
+	int width;
+	int precision;
+	int specifier;
 }					t_dir;
 
-int			ft_printf(const char *, ...);
-void		ft_putchar(char c);
-void		ft_putstr(const char *str);
-void		ft_putnbr(int n);
-void		ft_putnbr_hexa(int nbr);
-int			ft_atoi(const char *str);
-void		doop(int (*op[9])(t_dir, va_list));
-int			ft_iscspec(char c);
-void		ft_setupdir(t_dir *dir);
-int			ft_conversion(t_dir dir, va_list ap);
-const char	*ft_directive(const char *format, t_dir *dir, va_list ap);
-int			main();
+# define FLAGS t_dir->flags
+# define WIDTH t_dir->width
+# define PRECISION t_dir->precision
+# define SPECIFIER t_dir->specifier
+
+----------------------------------- */
+
 
 #endif
