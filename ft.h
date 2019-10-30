@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/30 13:07:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/30 15:56:02 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 
 # define BUFF_SIZE 10241
 # define C_SPEC "cspdiuxX%"
+# define ALLOWED **format && (**format == '0' || **format == '-' || \
+**format == ' ' || **format == '+' || **format == '#' || **format == '*' || \
+**format == '.' || (**format >= '0' && **format <= '9') || **format == '%' || \
+**format == '\'')
+
 /* ------------- DIR[] ------------- */
 # define ZERO dir[0] /* zero padding */
 # define LEFT dir[1] /* left justify */

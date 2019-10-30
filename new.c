@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/30 13:27:31 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/30 15:38:25 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	ft_iscspec(const char c)
 	while (C_SPEC[++i])
 		if (C_SPEC[i] == c)
 			return (i);
-	return (0);
+	return (-1);
 }
 
 int			ft_strnlen(char *str, int n)
@@ -49,7 +49,7 @@ int			ft_strnlen(char *str, int n)
 
 void	ft_initdir(int *dir, const char **format, va_list ap)
 {
-	while (**format && !(ft_iscspec(**format)))
+	while (ft_iscspec(*((*format)++) != 1) && ALLOWED)
 	{
 		if (**format >= '1' && **format <= '9')
 			WIDTH = skip_atoi(format);
@@ -59,9 +59,9 @@ void	ft_initdir(int *dir, const char **format, va_list ap)
 			if (WIDTH < 0 && (LEFT = 1) == 1)
 				WIDTH = WIDTH * -1;
 		}
-		if (**format == '.' && (*format)++ != NULL)
+		else if (**format == '.' && (*format)++ != NULL)
 		{
-			if (**format >= '1' && **format <= '9')
+			if (**format >= '0' && **format <= '9')
 				PRECISION = skip_atoi(format);
 			else if (**format == '*')
 				PRECISION = va_arg(ap, int);
@@ -72,9 +72,8 @@ void	ft_initdir(int *dir, const char **format, va_list ap)
 		PLUS = (**format == '+') ? 1 : PLUS;
 		SPACE = (**format == ' ') ? 1 : SPACE;
 		SPECIAL = (**format == '#') ? 1 : SPECIAL;
-		(*format)++;
 	}
-	SPECIFIER = ft_iscspec(*((*format)++));
+	SPECIFIER = ft_iscspec(**format);
 }
 
 int		to_c(char *buf, int *dir, va_list ap)
@@ -84,11 +83,16 @@ int		to_c(char *buf, int *dir, va_list ap)
 	char	fill;
 
 	str = buf;
-	fill = (ZERO == 1) ? '0' : ' ';
+	fill = ' ';
+	if (PRECISION == -1 && ZERO == 1)
+		fill = '0';
 	if (LEFT != 1)
 		while (0 < WIDTH--)
 			*str++ = fill;
-	*str++ = (SPECIFIER == 8) ? '%' : va_arg(ap, int);
+	if (SPECIFIER == -1)
+		*str++ = '\0';
+	else
+		*str++ = (SPECIFIER == 8) ? '%' : va_arg(ap, int);
 	while (0 < WIDTH--)
 		*str++ = ' ';
 	return (str - buf);
@@ -104,9 +108,10 @@ int		to_s(char *buf, int *dir, va_list ap)
 
 	s = va_arg(ap, char *);
 	len = ft_strnlen(s, PRECISION);
-	fill = (ZERO == 1) ? '0' : ' ';
+	fill = ' ';
+	if (PRECISION == -1 && ZERO == 1)
+		fill = '0';
 	str = buf;
-	printf("%s\n", s);
 	i = -1;
 	if (LEFT != 1)
 		while (len < WIDTH--)
@@ -128,8 +133,8 @@ char	*ft_itoa_base(unsigned long nbr, int base, int x)
 	if (!(n = (char *)malloc(40)))
 		return (NULL);
 	xbase = (x == 1) ? "0123456789ABCDEF" : "0123456789abcdef";
-	if (nbr == 0)
-		n[i++] = '0';
+	// if (nbr == 0)
+	// 	n[i++] = '0';
 	while (nbr != 0)
 	{
 		n[i++] = xbase[nbr % base];
@@ -147,7 +152,7 @@ char	*ft_number_str(char *n, char *buf, char sign, int *dir)
 
 	str = buf;
 	len = ft_strnlen(n, -1);
-	if (LEFT != 1 && (ZERO != 1 || PRECISION != -1))
+	if (LEFT != 1 && ZERO != 1)
 		while (0 < WIDTH--)
 			*str++ = ' ';
 	if (sign != 0)
@@ -161,11 +166,10 @@ char	*ft_number_str(char *n, char *buf, char sign, int *dir)
 	if (LEFT != 1)
 		while (0 < WIDTH--)
 			*str++ = fill;
-	while (PRECISION < len)
+	while (PRECISION-- > len)
 		*str++ = '0';
-	while (n && *n)
-		*str++ = *n++;
-	n != NULL ? free(n) : 0;
+	while (n && len-- > 0)
+		*str++ = n[len];
 	return (str);
 }
 
@@ -179,9 +183,9 @@ int		to_nbr(char *buf, int *dir, va_list ap)
 		nbr = (long)va_arg(ap, void *);
 	else
 		nbr = (long)va_arg(ap, int);
+	sign = (PLUS == 1) ? '+' : sign;
+	sign = (SPACE == 1) ? ' ' : sign;
 	sign = (nbr < 0) ? '-' : 0;
-	sign = (PLUS) ? '+' : sign;
-	sign = (SPACE) ? ' ' : sign;
 	WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
 	if (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2)
 		n = ft_itoa_base((unsigned)nbr, 16, 7 - SPECIFIER);
@@ -206,10 +210,9 @@ int		ft_cont(char *buf, const char *format, va_list ap)
 			buf[i++] = *format++;
 		else
 		{
-			format++;
 			ft_initdir(dir, &format, ap); // SECURE ?
 			// printf("0:%d | 1: %d |   2: %d | 3 : %d | 4 : %d | 5 : %d | 6  : %d | 7 : %d | 8 : %d\n", dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], dir[6], dir[7], dir[8]);
-			if (SPECIFIER == 0 || SPECIFIER == 8)
+			if (SPECIFIER < 1 || SPECIFIER == 8)
 				i += to_c(&buf[i], dir, ap);
 			else if (SPECIFIER == 1)
 				i += to_s(&buf[i], dir, ap);
@@ -239,7 +242,18 @@ int			ft_printf(const char *format, ...)
 
 int		 main(void)
 {
-	ft_printf("heeeeej\n");
-	ft_printf("heeeeej %40 .3 s\n", "TEseeeeert");
+	ft_printf("%020c\n", 'c');
+	printf("%020c\n", 'c');
+	ft_printf("%020c\n", '\0');
+	printf("%020c\n", '\0');
+	ft_printf("%-20c]\n", '\0');
+	printf("%-20c]\n", '\0');
+
+	// ft_printf("heeeeej\n");
+	// ft_printf("heeeeej %40 .3 s\n", "TEseeeeert");
+	// ft_printf("[%20.0md]\n", 0);
+	// printf("[%20.0md]\n", 0);
+	// ft_printf("%.d\n", 1);
+	// printf("[%.d]\n", 1);
 	return (0);
 }
