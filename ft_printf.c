@@ -6,7 +6,7 @@
 /*   By: fredrika <fredrika@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 12:58:06 by fredrika          #+#    #+#             */
-/*   Updated: 2019/10/29 16:56:32 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/30 12:24:38 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,7 @@ char		*ft_itoa_base(char *n, long nbr, int base, int x)
 	int		i;
 
 	i = 0;
-	if (nbr < 0)
-		nbr = -nbr;
-	xbase = (x == 0) ? "0123456789ABCDEF" : "0123456789abcdef";
+	xbase = (x == 1) ? "0123456789ABCDEF" : "0123456789abcdef";
 	if (nbr == 0)
 		n[i++] = '0';
 	while (nbr != 0)
@@ -180,7 +178,7 @@ static char	*ft_numbers(char *str, long nbr, int base, int *dir)
 	sign = (PLUS) ? '+' : sign;
 	sign = (SPACE) ? ' ' : sign;
 	WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
-	n = (SPECIFIER == 8) ? "%" : ft_itoa_base(n, (long)nbr, base, SMALL);
+	n = ft_itoa_base(n, nbr, base, SMALL);
 	len = ft_strnlen(n, -1);
 	PRECISION = PRECISION < len ? len : PRECISION;
 	WIDTH = WIDTH - PRECISION;
@@ -207,8 +205,6 @@ static int	to_nbr(char *buf, int *dir, va_list ap)
 		ZERO = 1;
 		nbr = (long)va_arg(ap, void *);
 	}
-	else if (SPECIFIER == 8)
-		nbr = '%';
 	else
 		nbr = (long)va_arg(ap, int);
 	return (buf - ft_numbers(buf, nbr, base, dir));
@@ -274,6 +270,28 @@ int			ft_printf(const char *format, ...)
 	// while (format && *format && printed != BUFF_SIZE)
 	printed = ft_cont(buf, format, ap);
 	write(1, buf, printed);
+	va_end(ap);
+	return (printed);
+}
+
+ELLER :
+int			ft_printf(const char *format, ...)
+{
+	char	buf[BUFF_SIZE];
+	va_list	ap;
+	int		printed;
+	int		last;
+
+	if (format == NULL)
+		return (-1);
+	printed = 0;
+	va_start(ap, format);
+	while (format && *format)
+	{
+		last = ft_cont(buf, format, ap);
+		write(1, buf, last);
+		printed += last;
+	}
 	va_end(ap);
 	return (printed);
 }
