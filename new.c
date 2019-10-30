@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/30 15:38:25 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/30 16:06:05 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,10 +245,11 @@ int		 main(void)
 	ft_printf("%020c\n", 'c');
 	printf("%020c\n", 'c');
 	ft_printf("%020c\n", '\0');
-	printf("%020c\n", '\0');
+	printf("%020.20c\n", '\0');
 	ft_printf("%-20c]\n", '\0');
 	printf("%-20c]\n", '\0');
 
+	printf("%-20s|\n", "Vad");
 	// ft_printf("heeeeej\n");
 	// ft_printf("heeeeej %40 .3 s\n", "TEseeeeert");
 	// ft_printf("[%20.0md]\n", 0);
