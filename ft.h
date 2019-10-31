@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/30 15:56:02 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/31 14:55:40 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
 
 # define BUFF_SIZE 10241
 # define C_SPEC "cspdiuxX%"
-# define ALLOWED **format && (**format == '0' || **format == '-' || \
+# define ALLOWED (**format == '0' || **format == '-' || **format == '\'' || \
 **format == ' ' || **format == '+' || **format == '#' || **format == '*' || \
-**format == '.' || (**format >= '0' && **format <= '9') || **format == '%' || \
-**format == '\'')
+**format == '.' || (**format >= '0' && **format <= '9'))
 
 /* ------------- DIR[] ------------- */
 # define ZERO dir[0] /* zero padding */
@@ -35,24 +34,5 @@
 # define WIDTH dir[6] /* field width */
 # define PRECISION dir[7]
 # define SPECIFIER dir[8]
-
-
-/* ---------- ALTERNATIVE ----------
-
-typedef	struct		s_dir
-{
-	int flags;
-	int width;
-	int precision;
-	int specifier;
-}					t_dir;
-
-# define FLAGS t_dir->flags
-# define WIDTH t_dir->width
-# define PRECISION t_dir->precision
-# define SPECIFIER t_dir->specifier
-
------------------------------------ */
-
 
 #endif

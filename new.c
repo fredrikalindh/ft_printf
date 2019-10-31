@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/30 16:06:05 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/10/31 15:32:44 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	skip_atoi(const char **s)
 	nb = 0;
 	while (**s >= '0' && **s <= '9')
 		nb = nb * 10 + *((*s)++) - '0';
+	(*s)--;
 	return (nb);
 }
 
@@ -49,8 +50,13 @@ int			ft_strnlen(char *str, int n)
 
 void	ft_initdir(int *dir, const char **format, va_list ap)
 {
-	while (ft_iscspec(*((*format)++) != 1) && ALLOWED)
+	while (++*format && ALLOWED)
 	{
+		ZERO = (**format == '0') ? 1 : ZERO;
+		LEFT = (**format == '-') ? 1 : LEFT;
+		PLUS = (**format == '+') ? 1 : PLUS;
+		SPACE = (**format == ' ') ? 1 : SPACE;
+		SPECIAL = (**format == '#') ? 1 : SPECIAL;
 		if (**format >= '1' && **format <= '9')
 			WIDTH = skip_atoi(format);
 		else if (**format == '*')
@@ -59,7 +65,7 @@ void	ft_initdir(int *dir, const char **format, va_list ap)
 			if (WIDTH < 0 && (LEFT = 1) == 1)
 				WIDTH = WIDTH * -1;
 		}
-		else if (**format == '.' && (*format)++ != NULL)
+		if (**format == '.' && (*format)++ != NULL)
 		{
 			if (**format >= '0' && **format <= '9')
 				PRECISION = skip_atoi(format);
@@ -67,23 +73,18 @@ void	ft_initdir(int *dir, const char **format, va_list ap)
 				PRECISION = va_arg(ap, int);
 			PRECISION = (PRECISION < 0) ? 0 : PRECISION;
 		}
-		ZERO = (**format == '0') ? 1 : ZERO;
-		LEFT = (**format == '-') ? 1 : LEFT;
-		PLUS = (**format == '+') ? 1 : PLUS;
-		SPACE = (**format == ' ') ? 1 : SPACE;
-		SPECIAL = (**format == '#') ? 1 : SPECIAL;
 	}
-	SPECIFIER = ft_iscspec(**format);
+	(SPECIFIER = ft_iscspec(**format)) >= 0 ? (*format)++ : 0;
 }
 
 int		to_c(char *buf, int *dir, va_list ap)
 {
 	char	*str;
-	int		width;
 	char	fill;
 
 	str = buf;
 	fill = ' ';
+	WIDTH--;
 	if (PRECISION == -1 && ZERO == 1)
 		fill = '0';
 	if (LEFT != 1)
@@ -95,7 +96,7 @@ int		to_c(char *buf, int *dir, va_list ap)
 		*str++ = (SPECIFIER == 8) ? '%' : va_arg(ap, int);
 	while (0 < WIDTH--)
 		*str++ = ' ';
-	return (str - buf);
+	return SPECIFIER == -1 ? (str - buf - 1) : (str - buf);
 }
 
 int		to_s(char *buf, int *dir, va_list ap)
@@ -109,7 +110,7 @@ int		to_s(char *buf, int *dir, va_list ap)
 	s = va_arg(ap, char *);
 	len = ft_strnlen(s, PRECISION);
 	fill = ' ';
-	if (PRECISION == -1 && ZERO == 1)
+	if (ZERO == 1)
 		fill = '0';
 	str = buf;
 	i = -1;
@@ -123,7 +124,7 @@ int		to_s(char *buf, int *dir, va_list ap)
 	return (str - buf);
 }
 
-char	*ft_itoa_base(unsigned long nbr, int base, int x)
+char	*ft_itoa_base(unsigned long nbr, unsigned int base, int x, int prec)
 {
 	char	*xbase;
 	int		i;
@@ -132,9 +133,9 @@ char	*ft_itoa_base(unsigned long nbr, int base, int x)
 	i = 0;
 	if (!(n = (char *)malloc(40)))
 		return (NULL);
-	xbase = (x == 1) ? "0123456789ABCDEF" : "0123456789abcdef";
-	// if (nbr == 0)
-	// 	n[i++] = '0';
+	xbase = (x == 0) ? "0123456789ABCDEF" : "0123456789abcdef";
+	if (nbr == 0 && prec != 0)
+		n[i++] = '0';
 	while (nbr != 0)
 	{
 		n[i++] = xbase[nbr % base];
@@ -152,7 +153,7 @@ char	*ft_number_str(char *n, char *buf, char sign, int *dir)
 
 	str = buf;
 	len = ft_strnlen(n, -1);
-	if (LEFT != 1 && ZERO != 1)
+	if (LEFT != 1 && (ZERO != 1 || PRECISION != -1))
 		while (0 < WIDTH--)
 			*str++ = ' ';
 	if (sign != 0)
@@ -160,7 +161,7 @@ char	*ft_number_str(char *n, char *buf, char sign, int *dir)
 	if (SPECIFIER == 2 || (SPECIAL == 1 && SPECIFIER >= 6 && SPECIFIER <= 7))
 	{
 		*str++ = '0';
-		*str++ = (SPECIFIER != 6) ? 'X' : 'x';
+		*str++ = (SPECIFIER == 6) ? 'X' : 'x';
 	}
 	fill = (ZERO == 1) ? '0' : ' ';
 	if (LEFT != 1)
@@ -183,14 +184,15 @@ int		to_nbr(char *buf, int *dir, va_list ap)
 		nbr = (long)va_arg(ap, void *);
 	else
 		nbr = (long)va_arg(ap, int);
+	sign = (SPACE == 1) ? ' ' : 0;
 	sign = (PLUS == 1) ? '+' : sign;
-	sign = (SPACE == 1) ? ' ' : sign;
-	sign = (nbr < 0) ? '-' : 0;
+	sign = (nbr < 0) ? '-' : sign;
+	sign = (SPECIFIER == 4 || SPECIFIER == 4) ? sign : 0;
 	WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
 	if (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2)
-		n = ft_itoa_base((unsigned)nbr, 16, 7 - SPECIFIER);
+		n = ft_itoa_base((unsigned)nbr, 16, 7 - SPECIFIER, PRECISION);
 	else
-		n = ft_itoa_base((unsigned)nbr, 10, 0);
+		n = ft_itoa_base((unsigned)nbr, 10, 0, PRECISION);
 	PRECISION = PRECISION < ft_strnlen(n, -1) ? ft_strnlen(n, -1) : PRECISION;
 	WIDTH = WIDTH - PRECISION;
 	return (ft_number_str(n, buf, sign, dir) - buf);
@@ -242,14 +244,29 @@ int			ft_printf(const char *format, ...)
 
 int		 main(void)
 {
-	ft_printf("%020c\n", 'c');
-	printf("%020c\n", 'c');
-	ft_printf("%020c\n", '\0');
-	printf("%020.20c\n", '\0');
-	ft_printf("%-20c]\n", '\0');
-	printf("%-20c]\n", '\0');
+	char	var;
 
-	printf("%-20s|\n", "Vad");
+	var = 'c';
+	printf("RETURN: %d\n", ft_printf("%20c\n", 'f'));
+	printf("RETURN: %d\n", printf("%20c\n", 'f'));
+	printf("RETURN: %d\n", ft_printf("[%c]\n", 'r'));
+	printf("RETURN: %d\n", printf("[%c]\n", 'r'));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%+ 20.p]\n", &var));
+	// // printf("RETURN: %d\n", printf("PRINT [%+ 20.p]\n", &var));
+	// printf("RETURN: %d\n", ft_printf("PRINTu [%.20 u]\n", -111));
+	// printf("RETURN: %d\n", printf("PRINTu [%.20 u]\n", -111));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%+# 20X]\n", 111));
+	// printf("RETURN: %d\n", printf("PRINT [%+#{} 20.X]\n", 111));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%+0.i]\n", 1));
+	// printf("RETURN: %d\n", printf("PRINT [%+0.i]\n", 1));
+	// printf("RETURN: %d\n", ft_printf("[%c]\n", '\0'));
+	// printf("RETURN: %d\n", printf("[%c]\n", '\0'));
+	// ft_printf("[%c]\n", 'c');
+	// printf("[%c]\n", 'c');
+	// ft_printf("%-20c]\n", '\0');
+	// printf("%-20c]\n", '\0');
+
+	// printf("%-20s|\n", "Vad");
 	// ft_printf("heeeeej\n");
 	// ft_printf("heeeeej %40 .3 s\n", "TEseeeeert");
 	// ft_printf("[%20.0md]\n", 0);
