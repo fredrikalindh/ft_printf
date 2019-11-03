@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:18:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/03 14:21:21 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/03 14:40:54 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,8 @@ int		 main(void)
 	// printf("[%20.0md]\n", 0);
 	// ft_printf("%.d\n", 1);
 	// printf("[%.d]\n", 1);
+
+	// moulitest + filechecker
+
 	return (0);
 }
