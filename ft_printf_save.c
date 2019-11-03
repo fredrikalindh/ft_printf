@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_save.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/03 09:25:16 by fredrikalindh    ###   ########.fr       */
+/*   Updated: 2019/11/03 12:00:26 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,14 +165,16 @@ int		to_s(char *buf, int *dir, va_list ap)
 	return (str - buf);
 }
 
-char	*ft_itoa_base(unsigned long nbr, unsigned int base, int x, int prec)
+char	*ft_itoa_base(long long nbr, int base, int x, int prec)
 {
 	char	*xbase;
 	int		i;
 	char	*n;
 
 	i = 0;
-	if (!(n = (char *)malloc(40)))
+	if (nbr < 0)
+		nbr = -nbr;
+	if (!(n = (char *)malloc(70)))
 		return (NULL);
 	xbase = (x == 0) ? "0123456789ABCDEF" : "0123456789abcdef";
 	if (nbr == 0 && prec != 0)
@@ -215,25 +217,53 @@ char	*ft_number_str(char *n, char *buf, char sign, int *dir)
 	return (str);
 }
 
-int		get_nbr()
+long long get_nbr(int *dir, va_list ap)
+{
+	if (SPECIFIER == 2)
+		return ((unsigned long long)va_arg(ap, void *));
+	else if (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 5)
+	{
+		if (LONG == 0)
+			return ((unsigned long long)va_arg(ap, long));
+		else if (LONG == 1)
+			return ((unsigned long long)va_arg(ap, long long));
+		else
+			return ((unsigned long long)va_arg(ap, int));
+	}
+	else
+	{
+		if (LONG == 0)
+			return ((long long)va_arg(ap, long));
+		else if (LONG == 1)
+			return ((long long)va_arg(ap, long long));
+		else
+			return ((long long)va_arg(ap, int));
+	}
+}
 
 int		to_nbr(char *buf, int *dir, va_list ap)
 {
-	long	nbr;
-	char	sign;
-	char	*n;
+	long long			nbr;
+	char				sign;
+	char				*n;
 
-	nbr = get_nbr(dir, ap);
-	sign = (SPACE == 1) ? ' ' : 0;
-	sign = (PLUS == 1) ? '+' : sign;
-	sign = (nbr < 0) ? '-' : sign;
-	sign = (SPECIFIER == 3 || SPECIFIER == 4) ? sign : 0;
-	WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
+	sign = 0;
+	if (SPECIFIER == 3 || SPECIFIER == 4)
+	{
+		nbr = get_nbr(dir, ap);
+		printf("%lld\n", nbr);
+		sign = (SPACE == 1) ? ' ' : 0;
+		sign = (PLUS == 1) ? '+' : sign;
+		sign = (nbr < 0) ? '-' : sign;
+		WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
+	}
 	(SPECIFIER == 2 || SPECIAL == 1) ? WIDTH = WIDTH - 2 : 0;
 	if (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2)
-		n = ft_itoa_base((unsigned long)nbr, 16, 7 - SPECIFIER, PRECISION);
+		n = ft_itoa_base((unsigned)get_nbr(dir, ap), 16, 7 - SPECIFIER, PRECISION);
+	else if (SPECIFIER == 5)
+		n = ft_itoa_base((unsigned)get_nbr(dir, ap), 10, 0, PRECISION);
 	else
-		n = ft_itoa_base((unsigned long)nbr, 10, 0, PRECISION);
+		n = ft_itoa_base((unsigned long long)nbr, 10, 0, PRECISION);
 	PRECISION = PRECISION < ft_strnlen(n, -1) ? ft_strnlen(n, -1) : PRECISION;
 	WIDTH = WIDTH - PRECISION;
 	return (ft_number_str(n, buf, sign, dir) - buf);
@@ -280,7 +310,7 @@ int		ft_cont(char *buf, const char **format, va_list ap, int i)
 			(*format)++;
 			ft_initdir(dir, format, ap);
 			ft_specifier(dir, format);
-			// printf("0:%d | 1: %d |   2: %d | 3 : %d | 4 : %d | 5 : %d | 6  : %d | 7 : %d | 8 : %d\n", dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], dir[6], dir[7], dir[8]);
+			printf("0:%d | 1: %d |   2: %d | 3 : %d | 4 : %d | 5 : %d | 6  : %d | 7 : %d | 8 : %d\n", dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], dir[6], dir[7], dir[8]);
 			if (SPECIFIER < 1 || SPECIFIER == 8)
 				i += to_c(&buf[i], dir, ap);
 			else if (SPECIFIER == 1)
@@ -333,8 +363,8 @@ int		 main(void)
 	// printf("RETURN: %d\n", printf("PRINT [%.20u]\n", 4111));
 	// printf("RETURN: %d\n", ft_printf("PRINT [%#20X]\n", 111));
 	// printf("RETURN: %d\n", printf("PRINT [%#20X]\n", 111));
-	// printf("RETURN: %d\n", ft_printf("PRINT [%++0.ii]\n", 1));
-	// printf("RETURN: %d\n", printf("PRINT [%+0.i]\n", 1));
+	printf("RETURN: %d\n", ft_printf("PRINT [%i]\n", -100));
+	printf("RETURN: %d\n", printf("PRINT [%i]\n", -100));
 	// printf("RETURN: %d\n", ft_printf("[%c]\n", '\0'));
 	// printf("RETURN: %d\n", printf("[%c]\n", '\0'));
 	// ft_printf("[%c]\n", 'c');
