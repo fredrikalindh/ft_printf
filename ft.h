@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/31 14:55:40 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/02 22:09:19 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@
 # define SPACE dir[3] /* sign = ' '*/
 # define SMALL dir[4] /* use small chars for hexa */
 # define SPECIAL dir[5] /* # */
-# define WIDTH dir[6] /* field width */
-# define PRECISION dir[7]
-# define SPECIFIER dir[8]
+# define LONG dir[6] // l && ll
+# define SIGNED dir[7] // h && hh
+# define WIDTH dir[8] /* field width */
+# define PRECISION dir[9]
+# define SPECIFIER dir[10]
 
 #endif

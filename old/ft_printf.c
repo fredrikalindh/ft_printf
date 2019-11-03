@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new.c                                              :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/10/31 15:32:44 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/02 16:27:36 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,16 @@ int			ft_strnlen(char *str, int n)
 
 void	ft_initdir(int *dir, const char **format, va_list ap)
 {
-	while (++*format && ALLOWED)
+	while (ALLOWED)
 	{
+		if (**format == '.' && (*format)++ != NULL)
+		{
+			if (**format >= '0' && **format <= '9')
+				PRECISION = skip_atoi(format);
+			else if (**format == '*')
+				PRECISION = va_arg(ap, int);
+			PRECISION = (PRECISION < 0) ? 0 : PRECISION;
+		}
 		ZERO = (**format == '0') ? 1 : ZERO;
 		LEFT = (**format == '-') ? 1 : LEFT;
 		PLUS = (**format == '+') ? 1 : PLUS;
@@ -65,17 +73,38 @@ void	ft_initdir(int *dir, const char **format, va_list ap)
 			if (WIDTH < 0 && (LEFT = 1) == 1)
 				WIDTH = WIDTH * -1;
 		}
-		if (**format == '.' && (*format)++ != NULL)
-		{
-			if (**format >= '0' && **format <= '9')
-				PRECISION = skip_atoi(format);
-			else if (**format == '*')
-				PRECISION = va_arg(ap, int);
-			PRECISION = (PRECISION < 0) ? 0 : PRECISION;
-		}
+		(*format)++;
 	}
 	(SPECIFIER = ft_iscspec(**format)) >= 0 ? (*format)++ : 0;
 }
+// void	ft_initdir(int *dir, const char **format, va_list ap)
+// {
+// 	while ((*format)++ && ALLOWED)
+// 	{
+// 		if (**format == '.' && (*format)++ != NULL)
+// 		{
+// 			if (**format >= '0' && **format <= '9')
+// 				PRECISION = skip_atoi(format);
+// 			else if (**format == '*')
+// 				PRECISION = va_arg(ap, int);
+// 			PRECISION = (PRECISION < 0) ? 0 : PRECISION;
+// 		}
+// 		ZERO = (**format == '0') ? 1 : ZERO;
+// 		LEFT = (**format == '-') ? 1 : LEFT;
+// 		PLUS = (**format == '+') ? 1 : PLUS;
+// 		SPACE = (**format == ' ') ? 1 : SPACE;
+// 		SPECIAL = (**format == '#') ? 1 : SPECIAL;
+// 		if (**format >= '1' && **format <= '9')
+// 			WIDTH = skip_atoi(format);
+// 		else if (**format == '*')
+// 		{
+// 			WIDTH = va_arg(ap, int);
+// 			if (WIDTH < 0 && (LEFT = 1) == 1)
+// 				WIDTH = WIDTH * -1;
+// 		}
+// 	}
+// 	(SPECIFIER = ft_iscspec(**format)) >= 0 ? (*format)++ : 0;
+// }
 
 int		to_c(char *buf, int *dir, va_list ap)
 {
@@ -181,18 +210,21 @@ int		to_nbr(char *buf, int *dir, va_list ap)
 	char	*n;
 
 	if (SPECIFIER == 2)
-		nbr = (long)va_arg(ap, void *);
+		nbr = (unsigned long)va_arg(ap, void *);
+	else if (SPECIFIER == 5)
+		nbr = (unsigned long)va_arg(ap, unsigned int);
 	else
 		nbr = (long)va_arg(ap, int);
 	sign = (SPACE == 1) ? ' ' : 0;
 	sign = (PLUS == 1) ? '+' : sign;
 	sign = (nbr < 0) ? '-' : sign;
-	sign = (SPECIFIER == 4 || SPECIFIER == 4) ? sign : 0;
+	sign = (SPECIFIER == 3 || SPECIFIER == 4) ? sign : 0;
 	WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
+	(SPECIFIER == 2 || SPECIAL == 1) ? WIDTH = WIDTH - 2 : 0;
 	if (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2)
-		n = ft_itoa_base((unsigned)nbr, 16, 7 - SPECIFIER, PRECISION);
+		n = ft_itoa_base((unsigned long)nbr, 16, 7 - SPECIFIER, PRECISION);
 	else
-		n = ft_itoa_base((unsigned)nbr, 10, 0, PRECISION);
+		n = ft_itoa_base((unsigned long)nbr, 10, 0, PRECISION);
 	PRECISION = PRECISION < ft_strnlen(n, -1) ? ft_strnlen(n, -1) : PRECISION;
 	WIDTH = WIDTH - PRECISION;
 	return (ft_number_str(n, buf, sign, dir) - buf);
@@ -212,7 +244,8 @@ int		ft_cont(char *buf, const char *format, va_list ap)
 			buf[i++] = *format++;
 		else
 		{
-			ft_initdir(dir, &format, ap); // SECURE ?
+			format++;
+			ft_initdir(dir, &format, ap);
 			// printf("0:%d | 1: %d |   2: %d | 3 : %d | 4 : %d | 5 : %d | 6  : %d | 7 : %d | 8 : %d\n", dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], dir[6], dir[7], dir[8]);
 			if (SPECIFIER < 1 || SPECIFIER == 8)
 				i += to_c(&buf[i], dir, ap);
@@ -242,22 +275,22 @@ int			ft_printf(const char *format, ...)
 	return (printed);
 }
 
-int		 main(void)
-{
-	char	var;
-
-	var = 'c';
-	printf("RETURN: %d\n", ft_printf("%20c\n", 'f'));
-	printf("RETURN: %d\n", printf("%20c\n", 'f'));
-	printf("RETURN: %d\n", ft_printf("[%c]\n", 'r'));
-	printf("RETURN: %d\n", printf("[%c]\n", 'r'));
-	// printf("RETURN: %d\n", ft_printf("PRINT [%+ 20.p]\n", &var));
-	// // printf("RETURN: %d\n", printf("PRINT [%+ 20.p]\n", &var));
-	// printf("RETURN: %d\n", ft_printf("PRINTu [%.20 u]\n", -111));
-	// printf("RETURN: %d\n", printf("PRINTu [%.20 u]\n", -111));
-	// printf("RETURN: %d\n", ft_printf("PRINT [%+# 20X]\n", 111));
-	// printf("RETURN: %d\n", printf("PRINT [%+#{} 20.X]\n", 111));
-	// printf("RETURN: %d\n", ft_printf("PRINT [%+0.i]\n", 1));
+// int		 main(void)
+// {
+// 	char	var;
+//
+// 	var = 'c';
+	// printf("RETURN: %d\n", ft_printf("%20c\n", 'f'));
+	// printf("RETURN: %d\n", printf("%20c\n", 'f'));
+	// printf("RETURN: %d\n", ft_printf("[%c]\n", 'r'));
+	// printf("RETURN: %d\n", printf("[%c]\n", 'r'));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%p]\n", &var));
+	// printf("RETURN: %d\n", printf("PRINT [%p]\n", &var));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%.20u]\n", 4111));
+	// printf("RETURN: %d\n", printf("PRINT [%.20u]\n", 4111));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%#20X]\n", 111));
+	// printf("RETURN: %d\n", printf("PRINT [%#20X]\n", 111));
+	// printf("RETURN: %d\n", ft_printf("PRINT [%++0.ii]\n", 1));
 	// printf("RETURN: %d\n", printf("PRINT [%+0.i]\n", 1));
 	// printf("RETURN: %d\n", ft_printf("[%c]\n", '\0'));
 	// printf("RETURN: %d\n", printf("[%c]\n", '\0'));
@@ -273,5 +306,5 @@ int		 main(void)
 	// printf("[%20.0md]\n", 0);
 	// ft_printf("%.d\n", 1);
 	// printf("[%.d]\n", 1);
-	return (0);
-}
+// 	return (0);
+// }
