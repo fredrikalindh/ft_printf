@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_number.c                                        :+:      :+:    :+:   */
+/*   to_nbr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:05:29 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/03 12:13:54 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/03 14:55:19 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ static long long	get_nbr(int *dir, va_list ap)
 	else if (SPECIFIER == 5)
 	{
 		if (LONG == 0)
-			return ((unsigned long long)va_arg(ap, long));
+			return ((unsigned long long)va_arg(ap, unsigned long));
 		else if (LONG == 1)
-			return ((unsigned long long)va_arg(ap, long long));
+			return (va_arg(ap, unsigned long long));
 		else
-			return ((unsigned long long)va_arg(ap, int));
+			return ((unsigned long long)va_arg(ap, unsigned int));
 	}
 	else
 	{
