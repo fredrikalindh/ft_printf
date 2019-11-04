@@ -6,13 +6,13 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:05:29 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/03 14:55:19 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/03 22:33:20 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
-static char			*ft_itoa_b(long long nbr, int base, int x, int prec)
+static void		*ft_itoa_b(char *addr, long long nbr, int base, int x, int prec)
 {
 	char			*xbase;
 	int				i;
@@ -21,8 +21,6 @@ static char			*ft_itoa_b(long long nbr, int base, int x, int prec)
 	i = 0;
 	if (nbr < 0)
 		nbr = -nbr;
-	if (!(n = (char *)malloc(70)))
-		return (NULL);
 	xbase = (x == 0) ? "0123456789ABCDEF" : "0123456789abcdef";
 	if (nbr == 0 && prec != 0)
 		n[i++] = '0';
@@ -32,7 +30,8 @@ static char			*ft_itoa_b(long long nbr, int base, int x, int prec)
 		nbr = nbr / base;
 	}
 	n[i] = '\0';
-	return (n);
+	while (addr && *n)
+		*addr++ = *n++;
 }
 
 static char			*ft_number_str(char *n, char *buf, char sign, int *dir)
@@ -59,8 +58,8 @@ static char			*ft_number_str(char *n, char *buf, char sign, int *dir)
 			*str++ = fill;
 	while (PRECISION-- > len)
 		*str++ = '0';
-	while (n && len-- > 0)
-		*str++ = n[len];
+	while (n && *n && len-- > 0)
+		*str++ = *n++;
 	return (str);
 }
 
@@ -92,7 +91,7 @@ int					to_nbr(char *buf, int *dir, va_list ap)
 {
 	long long		nbr;
 	char			sign;
-	char			*n;
+	char			n[70];
 
 	sign = 0;
 	if (SPECIFIER == 3 || SPECIFIER == 4)
@@ -105,12 +104,12 @@ int					to_nbr(char *buf, int *dir, va_list ap)
 	}
 	(SPECIFIER == 2 || SPECIAL == 1) ? WIDTH = WIDTH - 2 : 0;
 	if (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2)
-		n = ft_itoa_b((unsigned long long)get_nbr(dir, ap),
+		ft_itoa_b(n, (unsigned long long)get_nbr(dir, ap),
 		16, 7 - SPECIFIER, PRECISION);
 	else if (SPECIFIER == 5)
-		n = ft_itoa_b((unsigned long long)get_nbr(dir, ap), 10, 0, PRECISION);
+		ft_itoa_b(n, (unsigned long long)get_nbr(dir, ap), 10, 0, PRECISION);
 	else
-		n = ft_itoa_b((unsigned long long)nbr, 10, 0, PRECISION);
+		ft_itoa_b(n, (unsigned long long)nbr, 10, 0, PRECISION);
 	PRECISION = PRECISION < ft_strnlen(n, -1) ? ft_strnlen(n, -1) : PRECISION;
 	WIDTH = WIDTH - PRECISION;
 	return (ft_number_str(n, buf, sign, dir) - buf);
