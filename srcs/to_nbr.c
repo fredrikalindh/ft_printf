@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:05:29 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 17:27:19 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 18:36:16 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char			*ft_number_str(char *n, char *str, char sign, int *dir)
 	if (SPECIFIER == 2 || (SPECIAL == 1 && SPECIFIER >= 6 && SPECIFIER <= 7))
 	{
 		*str++ = '0';
-		*str++ = (SPECIFIER == 6) ? 'X' : 'x';
+		*str++ = (SPECIFIER == 6) ? 'x' : 'X';
 	}
 	fill = (ZERO == 1) ? '0' : ' ';
 	if (LEFT != 1)
@@ -112,7 +112,7 @@ int					to_nbr(char *buf, int *dir, va_list ap)
 	PRECISION != -1 ? ZERO = -1 : 0;
 	PRECISION = PRECISION < ft_strnlen(n, -1) ? ft_strnlen(n, -1) : PRECISION;
 	WIDTH = WIDTH - PRECISION;
-	n[0] == '0' ? SPECIAL = -1 : 0;
+	n[0] == '\0' || n[0] == '0' ? SPECIAL = -1 : 0;
 	(SPECIFIER == 2 || SPECIAL == 1) ? WIDTH = WIDTH - 2 : 0;
 	return (ft_number_str(n, buf, sign, dir) - buf);
 }

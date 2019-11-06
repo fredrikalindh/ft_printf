@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 17:31:07 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 18:14:55 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ static void	ft_initdir(int *dir, const char **format, va_list ap)
 		else if (**format == '*' && (*format)++ != NULL)
 		{
 			WIDTH = va_arg(ap, int);
-			if (WIDTH < 0 && (LEFT = 1) == 1)
-				WIDTH = -WIDTH;
+			WIDTH < 0 ? SETWIDTH : 0;
 		}
 		else
 			(*format)++;
@@ -84,7 +83,7 @@ static int	ft_cont(char *buf, const char **format, va_list ap, int i)
 				i += to_c(&buf[i], dir, ap);
 			else if (SPECIFIER == 1)
 				i += to_s(&buf[i], dir, ap);
-			else if (SPECIFIER > 1 && SPECIFIER < 8)
+			else if (SPECIFIER > 1)
 				i += to_nbr(&buf[i], dir, ap);
 		}
 		if (*(*format - 1) == '\n' && (buf[i] = '\0') == '\0')

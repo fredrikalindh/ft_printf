@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 17:17:03 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 18:15:08 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 # include <stdio.h>
 
 # define BUFF_SIZE 10241
-# define C_SPEC "cspdiuxX%o"
+# define C_SPEC "cspdiuxX%"
 # define NULLSTR "(null)"
 # define FMT **format
 # define FLG FMT == '0' || FMT == '-' || FMT == '\'' || FMT == ' ' || FMT == '.'
 # define ALL FMT == '+' || FMT == '#' || FMT == '*' || (FMT > 47 && FMT < 58)
+# define SETWIDTH "LEFT = 1, WIDTH = -WIDTH"
 
 # define ZERO dir[0]
 # define LEFT dir[1]
