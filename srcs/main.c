@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:18:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 13:48:48 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 14:03:49 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,22 @@ int		 main(void)
 	char	*s_hidden = "hi low";
 
 	var = 'c';
-	printf("RETURN: %d\n", ft_printf("this %i number", 0));
-	printf("RETURN: %d\n", printf("this %i number", 0));
+	printf("RETURN: %d\n", ft_printf("%05i", 43));
+	printf("RETURN: %d\n", printf("%05i", 43));
+	printf("RETURN: %d\n", ft_printf("%05i", 43));
+	printf("RETURN: %d\n", printf("%05i", 43));
+	printf("RETURN: %d\n", ft_printf("%05i", 43));
+	printf("RETURN: %d\n", printf("%05i", 43));
+	printf("RETURN: %d\n", ft_printf("%05i", 43));
+	printf("RETURN: %d\n", printf("%05i", 43));
+
+	// printf("RETURN: %d\n", ft_printf("%07i", -54));
+	// printf("RETURN: %d\n", printf("%07i", -54));
+	// printf("RETURN: %d\n", ft_printf("%03i", 0));
+	// printf("RETURN: %d\n", printf("%03i", 0));
+	// printf("RETURN: %d\n", ft_printf("this %i number", 0));
+	// printf("RETURN: %d\n", printf("this %i number", 0));
+
 	// printf("RETURN: %d\n", ft_printf("%9s", s_hidden));
 	// printf("RETURN: %d\n", printf("%9s", s_hidden));
 	// printf("RETURN: %d\n", ft_printf("%s\n", NULL));

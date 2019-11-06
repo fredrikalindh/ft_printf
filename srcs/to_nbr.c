@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:05:29 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 13:47:35 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 13:55:47 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,19 @@ static void		ft_itoa_b(char *addr, long long nbr, int *dir)
 	i = 0;
 	if (nbr < 0)
 		nbr = -nbr;
-	if (nbr)
+	base = (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2) ? 16 : 10;
+	xbase = (SPECIFIER == 7) ? "0123456789ABCDEF" : "0123456789abcdef";
+	if (nbr == 0 && PRECISION != 0)
+		n[i++] = '0';
+	while (nbr != 0)
 	{
-		base = (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2) ? 16 : 10;
-		xbase = (SPECIFIER == 7) ? "0123456789ABCDEF" : "0123456789abcdef";
-		if (nbr == 0 && PRECISION != 0)
-			n[i++] = '0';
-		while (nbr != 0)
-		{
-			n[i++] = xbase[nbr % base];
-			nbr = nbr / base;
-		}
-		n[i] = '\0';
-		while (addr && --i >= 0)
-			*addr++ = n[i];
+		n[i++] = xbase[nbr % base];
+		nbr = nbr / base;
 	}
+	n[i] = '\0';
+	while (addr && --i >= 0)
+		*addr++ = n[i];
+
 	*addr = '\0';
 }
 
@@ -46,7 +44,7 @@ static char			*ft_number_str(char *n, char *str, char sign, int *dir)
 	int				len;
 
 	len = ft_strnlen(n, -1);
-	if (LEFT != 1 && (ZERO != 1 || PRECISION != -1))
+	if (LEFT != 1 && ZERO != 1)
 		while (0 < WIDTH--)
 			*str++ = ' ';
 	if (sign != 0)
