@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:06:13 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/03 14:13:11 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 13:29:11 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int			to_s(char *buf, int *dir, va_list ap)
 	int		i;
 
 	s = va_arg(ap, char *);
+	s == NULL ? s = NULLSTR : 0;
 	len = ft_strnlen(s, PRECISION);
 	fill = ' ';
 	if (ZERO == 1)
