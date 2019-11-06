@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:18:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 16:44:08 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:22:42 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ int		 main(void)
 	char	*s_hidden = "hi low";
 
 	var = 'c';
-	printf("RETURN: %d\n", ft_printf("this %#x number\n", 17));
-	printf("RETURN: %d\n", printf("this %#x number\n", 17));
-	printf("RETURN: %d\n", ft_printf("this %#x number\n", 4294967295u));
-	printf("RETURN: %d\n", printf("this %#x number\n", 4294967295u));
+	printf("RETURN: %d\n", ft_printf("%'50d\n", 2147483647));
+	printf("RETURN: %d\n", printf("%'50d\n", 2147483647));
+	// printf("RETURN: %d\n", ft_printf("this %#-3x number\n", 0));
+	// printf("RETURN: %d\n", printf("this %#-3x number\n", 0));
+	// printf("RETURN: %d\n", ft_printf("this %#x number\n", 4294967295u));
+	// printf("RETURN: %d\n", printf("this %#x number\n", 4294967295u));
 	// printf("RETURN: %d\n", ft_printf("%x\n", 4294967295u));
 	// printf("RETURN: %d\n", printf("%x\n", 4294967295u));
 	// printf("RETURN: %d\n", ft_printf("%08.5i\n", 34));

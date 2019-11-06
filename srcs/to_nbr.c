@@ -6,18 +6,18 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:05:29 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 16:50:10 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:27:19 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft.h"
 
-static void		ft_itoa_b(char *addr, unsigned long long nbr, int *dir)
+static void			ft_itoa_b(char *addr, unsigned long long nbr, int *dir)
 {
-	char		*xbase;
-	int			i;
-	char		n[70];
-	int			base;
+	char			*xbase;
+	int				i;
+	char			n[70];
+	int				base;
 
 	i = 0;
 	base = (SPECIFIER == 6 || SPECIFIER == 7 || SPECIFIER == 2) ? 16 : 10;
@@ -35,10 +35,10 @@ static void		ft_itoa_b(char *addr, unsigned long long nbr, int *dir)
 	*addr = '\0';
 }
 
-static char		*ft_number_str(char *n, char *str, char sign, int *dir)
+static char			*ft_number_str(char *n, char *str, char sign, int *dir)
 {
-	char		fill;
-	int			len;
+	char			fill;
+	int				len;
 
 	len = ft_strnlen(n, -1);
 	if (LEFT != 1 && ZERO != 1)
@@ -88,11 +88,11 @@ static long long	get_nbr(int *dir, va_list ap)
 	}
 }
 
-int				to_nbr(char *buf, int *dir, va_list ap)
+int					to_nbr(char *buf, int *dir, va_list ap)
 {
-	long long	nbr;
-	char		sign;
-	char		n[70];
+	long long		nbr;
+	char			sign;
+	char			n[70];
 
 	sign = 0;
 	if (SPECIFIER == 3 || SPECIFIER == 4)
@@ -103,7 +103,6 @@ int				to_nbr(char *buf, int *dir, va_list ap)
 		sign = (nbr < 0) ? '-' : sign;
 		WIDTH = (sign != 0) ? WIDTH - 1 : WIDTH;
 	}
-	(SPECIFIER == 2 || SPECIAL == 1) ? WIDTH = WIDTH - 2 : 0;
 	if ((SPECIFIER == 3 || SPECIFIER == 4) && nbr >= 0)
 		ft_itoa_b(n, (unsigned long long)nbr, dir);
 	else if (SPECIFIER == 3 || SPECIFIER == 4)
@@ -113,5 +112,7 @@ int				to_nbr(char *buf, int *dir, va_list ap)
 	PRECISION != -1 ? ZERO = -1 : 0;
 	PRECISION = PRECISION < ft_strnlen(n, -1) ? ft_strnlen(n, -1) : PRECISION;
 	WIDTH = WIDTH - PRECISION;
+	n[0] == '0' ? SPECIAL = -1 : 0;
+	(SPECIFIER == 2 || SPECIAL == 1) ? WIDTH = WIDTH - 2 : 0;
 	return (ft_number_str(n, buf, sign, dir) - buf);
 }

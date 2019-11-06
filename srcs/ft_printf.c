@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 16:49:48 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:31:07 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ static void	ft_specifier(int *dir, const char **format)
 {
 	while (**format == 'h' || **format == 'l')
 	{
-		if (**format == 'h')
-			SIGNED++;
 		if (**format == 'l')
 			LONG++;
 		(*format)++;
@@ -82,7 +80,6 @@ static int	ft_cont(char *buf, const char **format, va_list ap, int i)
 				dir[--j] = -1;
 			ft_initdir(dir, format, ap);
 			ft_specifier(dir, format);
-			// printf("SECOND 0:%d | 1: %d |   2: %d | 3 : %d | 4 : %d | 5 : %d | 6  : %d | 7 : %d | 8 : %d | 9: %d | 10: %d\n", dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], dir[6], dir[7], dir[8], dir[9], dir[10]);
 			if (SPECIFIER < 1 || SPECIFIER == 8)
 				i += to_c(&buf[i], dir, ap);
 			else if (SPECIFIER == 1)

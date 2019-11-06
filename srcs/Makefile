@@ -6,7 +6,7 @@
 #    By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:33 by frlindh           #+#    #+#              #
-#    Updated: 2019/11/03 12:17:54 by frlindh          ###   ########.fr        #
+#    Updated: 2019/11/06 16:51:40 by frlindh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ OBJS_BONUS	=	$(patsubst %.c, %.o, $(SRCS_BONUS))
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) *.h
 	ar rcs $@ $^
 
 bonus: $(OBJS) $(OBJS_BONUS)

@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 16:50:42 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:17:03 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 
 # define BUFF_SIZE 10241
-# define C_SPEC "cspdiuxX%"
+# define C_SPEC "cspdiuxX%o"
 # define NULLSTR "(null)"
 # define FMT **format
 # define FLG FMT == '0' || FMT == '-' || FMT == '\'' || FMT == ' ' || FMT == '.'
@@ -32,10 +32,9 @@
 # define SMALL dir[4]
 # define SPECIAL dir[5]
 # define LONG dir[6]
-# define SIGNED dir[7]
-# define WIDTH dir[8]
-# define PRECISION dir[9]
-# define SPECIFIER dir[10]
+# define WIDTH dir[7]
+# define PRECISION dir[8]
+# define SPECIFIER dir[9]
 
 int		ft_printf(const char *format, ...);
 int		ft_strnlen(char *str, int n);
