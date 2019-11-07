@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 18:14:55 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/07 12:33:04 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,24 @@ static int	ft_iscspec(const char c)
 	return (-1);
 }
 
-static void	ft_specifier(int *dir, const char **format)
+static void	ft_specifier(int *dir, const char **format, int i, va_list ap)
 {
+	int		*ptr;
+
 	while (**format == 'h' || **format == 'l')
 	{
 		if (**format == 'l')
 			LONG++;
+		if (**format == 'h')
+			SHORT++;
 		(*format)++;
 	}
 	(SPECIFIER = ft_iscspec(**format)) >= 0 ? (*format)++ : 0;
+	if (SPECIFIER == 9)
+	{
+		ptr = va_arg(ap, int *);
+		*ptr = i;
+	}
 }
 
 static void	ft_initdir(int *dir, const char **format, va_list ap)
@@ -78,12 +87,12 @@ static int	ft_cont(char *buf, const char **format, va_list ap, int i)
 			while (j > 0)
 				dir[--j] = -1;
 			ft_initdir(dir, format, ap);
-			ft_specifier(dir, format);
+			ft_specifier(dir, format, i, ap);
 			if (SPECIFIER < 1 || SPECIFIER == 8)
 				i += to_c(&buf[i], dir, ap);
 			else if (SPECIFIER == 1)
 				i += to_s(&buf[i], dir, ap);
-			else if (SPECIFIER > 1)
+			else if (SPECIFIER > 1 && SPECIFIER < 9)
 				i += to_nbr(&buf[i], dir, ap);
 		}
 		if (*(*format - 1) == '\n' && (buf[i] = '\0') == '\0')

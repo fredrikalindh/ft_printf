@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:05:29 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/06 18:36:16 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/07 12:28:57 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char			*ft_number_str(char *n, char *str, char sign, int *dir)
 	if (SPECIFIER == 2 || (SPECIAL == 1 && SPECIFIER >= 6 && SPECIFIER <= 7))
 	{
 		*str++ = '0';
-		*str++ = (SPECIFIER == 6) ? 'x' : 'X';
+		*str++ = (SPECIFIER == 7) ? 'X' : 'x';
 	}
 	fill = (ZERO == 1) ? '0' : ' ';
 	if (LEFT != 1)
@@ -74,6 +74,10 @@ static long long	get_nbr(int *dir, va_list ap)
 			return ((unsigned long long)va_arg(ap, unsigned long));
 		else if (LONG == 1)
 			return (va_arg(ap, unsigned long long));
+		else if (SHORT == 0)
+			return ((unsigned short int)va_arg(ap, unsigned long));
+		else if (SHORT == 1)
+			return ((unsigned char)va_arg(ap, unsigned long));
 		else
 			return ((unsigned long long)va_arg(ap, unsigned int));
 	}
@@ -83,6 +87,10 @@ static long long	get_nbr(int *dir, va_list ap)
 			return ((long long)va_arg(ap, long));
 		else if (LONG == 1)
 			return ((long long)va_arg(ap, long long));
+		else if (SHORT == 0)
+			return ((short int)va_arg(ap, unsigned long));
+		else if (SHORT == 1)
+			return ((signed char)va_arg(ap, unsigned long));
 		else
 			return ((long long)va_arg(ap, int));
 	}
