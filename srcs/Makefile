@@ -6,7 +6,7 @@
 #    By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 14:20:33 by frlindh           #+#    #+#              #
-#    Updated: 2019/11/07 12:27:25 by fredrikalindh    ###   ########.fr        #
+#    Updated: 2019/11/07 15:33:23 by fredrikalindh    ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,9 @@ FLAGS			=	-Wall -Wextra -Werror
 
 # SRCS *********************************************************************** #
 SRCS			=	ft_printf.c ft_strnlen.c skip_atoi.c to_c.c to_s.c to_nbr.c
-SRCS_BONUS 		=
 
 # OBJS *********************************************************************** #
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
-OBJS_BONUS	=	$(patsubst %.c, %.o, $(SRCS_BONUS))
 
 # RULES ********************************************************************** #
 
@@ -29,17 +27,16 @@ OBJS_BONUS	=	$(patsubst %.c, %.o, $(SRCS_BONUS))
 
 all: $(NAME)
 
-$(NAME): $(OBJS) *.h
+$(NAME): $(OBJS) ft.h
 	ar rcs $@ $^
 
-bonus: $(OBJS) $(OBJS_BONUS)
-	ar rcs $(NAME) $(OBJS) $(OBJS_BONUS)
+bonus: $(NAME)
 
 %.o: %.c
 	$(GCC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(OBJS_BONUS)
+	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)

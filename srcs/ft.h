@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:51:55 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/07 14:54:17 by fredrikalindh    ###   ########.fr       */
+/*   Updated: 2019/11/07 15:32:34 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
-
-# include <stdio.h>
-
 
 # define BUFF_SIZE 10241
 # define C_SPEC "cspdiuxX%n"

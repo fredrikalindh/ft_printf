@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 12:18:59 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/07 15:10:50 by fredrikalindh    ###   ########.fr       */
+/*   Updated: 2019/11/07 15:26:36 by fredrikalindh    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,45 +20,71 @@ int		 main(void)
 	char	*s_hidden = "hi low";
 
 	var = 'c';
-	// printf("RETURN: %d\n", ft_printf("%hi \n", SHRT_MIN));
-	// printf("RETURN: %d\n", printf("%hi \n", SHRT_MIN));
-	// printf("RETURN: %d\n", ft_printf("%hi \n", SHRT_MAX));
-	// printf("RETURN: %d\n", printf("%hi \n", SHRT_MAX));
-	// printf("RETURN: %d\n", ft_printf("%hu \n", USHRT_MAX));
-	// printf("RETURN: %d\n", printf("%hu \n", USHRT_MAX));
-	//
-	// printf("RETURN: %d\n", ft_printf("%i \n", INT_MIN));
-	// printf("RETURN: %d\n", printf("%i \n", INT_MIN));
-	// printf("RETURN: %d\n", ft_printf("%i \n", INT_MAX));
-	// printf("RETURN: %d\n", printf("%i \n", INT_MAX));
-	// printf("RETURN: %d\n", ft_printf("%li \n", LONG_MIN));
-	// printf("RETURN: %d\n", printf("%li \n", LONG_MIN));
-	// printf("RETURN: %d\n", ft_printf("%li \n", LONG_MAX));
-	// printf("RETURN: %d\n", printf("%li \n", LONG_MAX));
-	// printf("RETURN: %d\n", ft_printf("%lli \n", LLONG_MIN));
-	// printf("RETURN: %d\n", printf("%lli \n", LLONG_MIN));
-	// printf("RETURN: %d\n", ft_printf("%lli \n", LLONG_MAX));
-	// printf("RETURN: %d\n", printf("%lli \n", LLONG_MAX));
-	//
-	// printf("RETURN: %d\n", ft_printf("%d \n", INT_MIN));
-	// printf("RETURN: %d\n", printf("%d \n", INT_MIN));
-	// printf("RETURN: %d\n", ft_printf("%d \n", INT_MAX));
-	// printf("RETURN: %d\n", printf("%d \n", INT_MAX));
-	// printf("RETURN: %d\n", ft_printf("%ld \n", LONG_MIN));
-	// printf("RETURN: %d\n", printf("%ld \n", LONG_MIN));
-	// printf("RETURN: %d\n", ft_printf("%ld \n", LONG_MAX));
-	// printf("RETURN: %d\n", printf("%ld \n", LONG_MAX));
-	// printf("RETURN: %d\n", ft_printf("%lld \n", LLONG_MIN));
-	// printf("RETURN: %d\n", printf("%lld \n", LLONG_MIN));
-	// printf("RETURN: %d\n", ft_printf("%lld \n", LLONG_MAX));
-	// printf("RETURN: %d\n", printf("%lld \n", LLONG_MAX));
-	//
-	// printf("RETURN: %d\n", ft_printf("%u \n", UINT_MAX));
-	// printf("RETURN: %d\n", printf("%u \n", UINT_MAX));
-	// printf("RETURN: %d\n", ft_printf("%lu \n", ULONG_MAX));
-	// printf("RETURN: %d\n", printf("%lu \n", ULONG_MAX));
-	// printf("RETURN: %d\n", ft_printf("%llu \n", ULLONG_MAX));
-	// printf("RETURN: %d\n", printf("%llu \n", ULLONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%hi \n", SHRT_MIN));
+	printf("RETURN: %d\n", printf("%hi \n", SHRT_MIN));
+	printf("RETURN: %d\n", ft_printf("%hi \n", SHRT_MAX));
+	printf("RETURN: %d\n", printf("%hi \n", SHRT_MAX));
+	printf("RETURN: %d\n", ft_printf("%hu \n", USHRT_MAX));
+	printf("RETURN: %d\n", printf("%hu \n", USHRT_MAX));
+
+	printf("RETURN: %d\n", ft_printf("%i \n", INT_MIN));
+	printf("RETURN: %d\n", printf("%i \n", INT_MIN));
+	printf("RETURN: %d\n", ft_printf("%i \n", INT_MAX));
+	printf("RETURN: %d\n", printf("%i \n", INT_MAX));
+	printf("RETURN: %d\n", ft_printf("%'li \n", LONG_MIN));
+	printf("RETURN: %d\n", printf("%'li \n", LONG_MIN));
+	printf("RETURN: %d\n", ft_printf("%'li \n", LONG_MAX));
+	printf("RETURN: %d\n", printf("%'li \n", LONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%'lli \n", LLONG_MIN));
+	printf("RETURN: %d\n", printf("%'lli \n", LLONG_MIN));
+	printf("RETURN: %d\n", ft_printf("%'lli \n", LLONG_MAX));
+	printf("RETURN: %d\n", printf("%'lli \n", LLONG_MAX));
+
+	printf("RETURN: %d\n", ft_printf("%d \n", INT_MIN));
+	printf("RETURN: %d\n", printf("%d \n", INT_MIN));
+	printf("RETURN: %d\n", ft_printf("%d \n", INT_MAX));
+	printf("RETURN: %d\n", printf("%d \n", INT_MAX));
+	printf("RETURN: %d\n", ft_printf("%'ld \n", LONG_MIN));
+	printf("RETURN: %d\n", printf("%'ld \n", LONG_MIN));
+	printf("RETURN: %d\n", ft_printf("%'ld \n", LONG_MAX));
+	printf("RETURN: %d\n", printf("%'ld \n", LONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%'lld \n", LLONG_MIN));
+	printf("RETURN: %d\n", printf("%'lld \n", LLONG_MIN));
+	printf("RETURN: %d\n", ft_printf("%'lld \n", LLONG_MAX));
+	printf("RETURN: %d\n", printf("%'lld \n", LLONG_MAX));
+
+	printf("RETURN: %d\n", ft_printf("%u \n", UINT_MAX));
+	printf("RETURN: %d\n", printf("%u \n", UINT_MAX));
+	printf("RETURN: %d\n", ft_printf("%'lu \n", ULONG_MAX));
+	printf("RETURN: %d\n", printf("%'lu \n", ULONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%'llu \n", ULLONG_MAX));
+	printf("RETURN: %d\n", printf("%'llu \n", ULLONG_MAX));
+
+	printf("RETURN: %d\n", ft_printf("%x \n", UINT_MAX));
+	printf("RETURN: %d\n", printf("%x \n", UINT_MAX));
+	printf("RETURN: %d\n", ft_printf("%'lx \n", ULONG_MAX));
+	printf("RETURN: %d\n", printf("%'lx \n", ULONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%'llx \n", ULLONG_MAX));
+	printf("RETURN: %d\n", printf("%'llx \n", ULLONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%X \n", UINT_MAX));
+	printf("RETURN: %d\n", printf("%X \n", UINT_MAX));
+	printf("RETURN: %d\n", ft_printf("%'lX \n", ULONG_MAX));
+	printf("RETURN: %d\n", printf("%'lX \n", ULONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%'llX \n", ULLONG_MAX));
+	printf("RETURN: %d\n", printf("%'llX \n", ULLONG_MAX));
+
+	printf("RETURN: %d\n", ft_printf("%X \n", INT_MIN));
+	printf("RETURN: %d\n", printf("%X \n", INT_MIN));
+	printf("RETURN: %d\n", ft_printf("%X \n", INT_MAX));
+	printf("RETURN: %d\n", printf("%X \n", INT_MAX));
+	printf("RETURN: %d\n", ft_printf("%'lx \n", LONG_MIN));
+	printf("RETURN: %d\n", printf("%'lx \n", LONG_MIN));
+	printf("RETURN: %d\n", ft_printf("%'lx \n", LONG_MAX));
+	printf("RETURN: %d\n", printf("%'lx \n", LONG_MAX));
+	printf("RETURN: %d\n", ft_printf("%'llx \n", LLONG_MIN));
+	printf("RETURN: %d\n", printf("%'llx \n", LLONG_MIN));
+	printf("RETURN: %d\n", ft_printf("%'llx \n", LLONG_MAX));
+	printf("RETURN: %d\n", printf("%'llx \n", LLONG_MAX));
 
 
 
@@ -122,11 +148,11 @@ int		 main(void)
 	// printf("RETURN: %d\n", printf("[%c]\n", '\0'));
 
 
-	int test;
-	int fd = open("ft_printf.c");
-	char buf[1000];
-	read(fd, buf, 999);
-	buf[999] = '\0';
+	// int test;
+	// int fd = open("ft_printf.c");
+	// char buf[1000];
+	// read(fd, buf, 999);
+	// buf[999] = '\0';
 	// printf("RETURN: %d %d\n", ft_printf("%.7s %n\n", "hello", &test), test);
 	// printf("RETURN: %d %d\n", printf("%.7s %n\n", "hello", &test), test);
 	// printf("RETURN: %d\n", ft_printf("%.2s%.7s\n", "hello", "world"));
@@ -134,7 +160,7 @@ int		 main(void)
 	// printf("RETURN: %d\n", ft_printf("%.7s%.2s\n", "hello", "world"));
 	// printf("RETURN: %d\n", printf("%.7s%.2s\n", "hello", "world"));
 	// printf("RETURN: %d\n", ft_printf("MIN s: %s\n p: %p,\n  \n%s\n", buf, &buf,  43));
-	printf("RETURN: %d\n", printf("EMI s: %s\n p: %p,\n \n%s\n", buf,  &buf,  43));
+	// printf("RETURN: %d\n", printf("EMI s: %s\n p: %p,\n \n%s\n", buf,  &buf,  43));
 	// printf("RETURN: %d\n", ft_printf("{%-15p}", 0));
 	// printf("RETURN: %d\n", printf("{%-15p}", 0));
 	// printf("RETURN: %d\n", ft_printf("{%-10d}", 42));
