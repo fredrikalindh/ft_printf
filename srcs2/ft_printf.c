@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/08 11:46:27 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/08 11:52:12 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static int	ft_iscspec(const char c)
 
 static void	ft_specifier(int *dir, const char **format, int i, va_list ap)
 {
-	int		*ptr;
-
 	while (**format == 'h' || **format == 'l')
 	{
 		if (**format == 'l')
@@ -37,11 +35,7 @@ static void	ft_specifier(int *dir, const char **format, int i, va_list ap)
 	}
 	(SPECIFIER = ft_iscspec(**format)) >= 0 ? (*format)++ : 0;
 	if (SPECIFIER == 9)
-	{
-		if (LONG >= 0)
-			ptr = (LONG == 0) ? (int *)va_arg(ap, long *);
-		*ptr = i;
-	}
+		to_n(i, dir, ap);
 }
 
 static void	ft_initdir(int *dir, const char **format, va_list ap)
