@@ -6,7 +6,7 @@
 /*   By: frlindh <frlindh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 10:37:08 by frlindh           #+#    #+#             */
-/*   Updated: 2019/11/08 11:52:12 by frlindh          ###   ########.fr       */
+/*   Updated: 2019/11/12 14:05:42 by frlindh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	ft_specifier(int *dir, const char **format, int i, va_list ap)
 
 static void	ft_initdir(int *dir, const char **format, va_list ap)
 {
-	while (ALL || FLG)
+	while (ALL || FLG) //while allowed chars
 	{
 		ZERO = (**format == '0') ? 1 : ZERO;
 		LEFT = (**format == '-') ? 1 : LEFT;
@@ -50,7 +50,7 @@ static void	ft_initdir(int *dir, const char **format, va_list ap)
 		if (**format == '.' && (*format)++ != NULL)
 		{
 			if (**format >= '0' && **format <= '9')
-				PRECISION = skip_atoi(format);
+				PRECISION = skip_atoi(format); //skip atoi skips format nbrs and returns as int
 			else if (**format == '*' && (*format)++ != NULL)
 				PRECISION = va_arg(ap, int);
 			PRECISION = (PRECISION < 0) ? 0 : PRECISION;
@@ -74,23 +74,23 @@ static int	ft_cont(char *buf, const char **format, va_list ap, int i)
 
 	while (**format && i < BUFF_SIZE - 65)
 	{
-		if ((j = 11) == 11 && **format != '%')
+		if ((j = 11) == 11 && **format != '%') // if no %, just copies to buf
 			buf[i++] = *(*format)++;
 		else
 		{
-			(*format)++;
-			while (j > 0)
+			(*format)++; // go past %
+			while (j > 0) // set all ints in dir to -1
 				dir[--j] = -1;
-			ft_initdir(dir, format, ap);
-			ft_specifier(dir, format, i, ap);
-			if (SPECIFIER < 1 || SPECIFIER == 8)
+			ft_initdir(dir, format, ap); //initialize dir w flags, width, precision
+			ft_specifier(dir, format, i, ap); // add for h, l and specifier, and if n: sets pointer to i
+			if (SPECIFIER < 1 || SPECIFIER == 8) // if c or % or no specifier
 				i += to_c(&buf[i], dir, ap);
-			else if (SPECIFIER == 1)
+			else if (SPECIFIER == 1) // if s
 				i += to_s(&buf[i], dir, ap);
-			else if (SPECIFIER > 1 && SPECIFIER < 9)
+			else if (SPECIFIER > 1 && SPECIFIER < 9) // if number (d, i, x, X, p)
 				i += to_nbr(&buf[i], dir, ap);
 		}
-		if (*(*format - 1) == '\n' && (buf[i] = '\0') == '\0')
+		if (*(*format - 1) == '\n' && (buf[i] = '\0') == '\0') // if \n: \0 buff and return -> print
 			return (i);
 	}
 	return (buf[i] = '\0') == '\0' ? (i) : (i);
@@ -107,7 +107,9 @@ int			ft_printf(const char *format, ...)
 		return (-1);
 	printed = 0;
 	va_start(ap, format);
-	while (*format)
+	while (*format) /* like the real printf mine prints when encountering a \n
+	(or if near BUFF_SIZE) therefore a loop to finish *format, but usually enough w
+	one ft_cont & one write */
 	{
 		last = ft_cont(buf, &format, ap, 0);
 		write(1, buf, last);
