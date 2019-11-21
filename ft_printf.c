@@ -90,10 +90,10 @@ static int	ft_cont(char *buf, const char **format, va_list ap, int i)
 			else if (SPECIFIER > 1 && SPECIFIER < 9) // if number (d, i, x, X, p)
 				i += to_nbr(&buf[i], dir, ap);
 		}
-		if (*(*format - 1) == '\n' && (buf[i] = '\0') == '\0') // if \n: \0 buff and return -> print
-			return (i);
+		if (*(*format - 1) == '\n') // if \n: \0 return -> print
+			break;
 	}
-	return (buf[i] = '\0') == '\0' ? (i) : (i);
+	return (i);
 }
 
 int			ft_printf(const char *format, ...)
